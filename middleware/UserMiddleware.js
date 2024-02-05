@@ -34,7 +34,14 @@ const authMiddleware = async (req, res, next) => {
 
   // GET USER DATA BY DECODED CONDITION
   const currentUser = await User.findByPk(decoded.id);
-  console.log(currentUser);
+  if (!currentUser) {
+    return next(
+      res.status(401).json({
+        status: 401,
+        message: 'User does not exist, the token is invalid',
+      })
+    );
+  }
 
   req.user;
 
